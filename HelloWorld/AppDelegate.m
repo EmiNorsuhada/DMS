@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 
-#import "HelloWorldViewController.h"
 #import "DMSViewController.h"
 
 @implementation AppDelegate
