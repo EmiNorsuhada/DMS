@@ -12,5 +12,6 @@
 
 
 - (IBAction)BackBtn:(id)sender;
+- (IBAction)SearchBtn:(id)sender;
 
 @end
