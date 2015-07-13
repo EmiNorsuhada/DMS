@@ -8,12 +8,14 @@
 
 #import "DMSViewController.h"
 #import "ModuleViewController.h"
+#import "SearchViewController.h"
 
 @interface DMSViewController ()
 
 @end
 
 @implementation DMSViewController
+@synthesize PassWord,UserName;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -27,18 +29,72 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    UserName.textColor =[UIColor blackColor];
+    UserName.font =[UIFont systemFontOfSize:17.0];
+    UserName.placeholder =@"Username";
+    UserName.backgroundColor =[UIColor whiteColor];
+    UserName.keyboardType = UIKeyboardAppearanceDefault;
+    UserName.returnKeyType = UIReturnKeyDone;
+    [self.view addSubview:UserName];
+    UserName.clearButtonMode = UITextFieldViewModeWhileEditing;
+    
+    
+    PassWord.textColor =[UIColor blackColor];
+    PassWord.secureTextEntry = YES;
+    PassWord.placeholder =@"password";
+    PassWord.backgroundColor =[UIColor whiteColor];
+    PassWord.keyboardType = UIKeyboardAppearanceDefault;
+    PassWord.returnKeyType = UIReturnKeyDone;
+    [self.view addSubview:PassWord];
+    PassWord.clearButtonMode = UITextFieldViewModeWhileEditing;
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)LoginBtn:(id)sender {
-	
-	ModuleViewController *controller = [[ModuleViewController alloc]init];
-	[self presentViewController:controller animated:YES completion:Nil];
-}
+- (IBAction)LoginBtn:(id)sender
+{
+    NSString *post = [NSString stringWithFormat:@"Username=%@&Password=%@",UserName.text,PassWord.text];
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%d",[postData length]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:@"http://192.168.2.28/docufloSDK/docuflosdk.asmx/Login"]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    NSData *urlData;
+    NSURLResponse *response;
+    NSError *error;
+    urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    if(conn) {
+        NSLog(@"Connection Successful");
+    } else {
+        NSLog(@"Connection could not be made");
+    }
+    NSString *aStr = [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
+    NSRange rangeValue = [aStr rangeOfString:@">3<" options:NSCaseInsensitiveSearch];
+    NSRange rangeValue1 = [aStr rangeOfString:@"Incorrect User Name or Password" options:NSCaseInsensitiveSearch];
+    NSRange rangeValue2 = [aStr rangeOfString:@"Invalid Parameter" options:NSCaseInsensitiveSearch];
+    
+    if (rangeValue.length > 0)
+    {
+        SearchViewController *controller = [[SearchViewController alloc]init];
+        [self presentViewController:controller animated:YES completion:Nil];
+    }
+    else if (rangeValue1.length > 0)
+    {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"DMS" message:@"Incorrect User Name or Password" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alertView show];
+    }
+    else if (rangeValue2.length > 0)
+    {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"DMS" message:@"Invalid Parameter" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alertView show];
+    }
+
+   }
 @end

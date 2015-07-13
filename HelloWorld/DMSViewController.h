@@ -12,6 +12,8 @@
 
 
 - (IBAction)LoginBtn:(id)sender;
+@property (strong, nonatomic) IBOutlet UITextField *UserName;
+@property (strong, nonatomic) IBOutlet UITextField *PassWord;
 
 
 @end
