@@ -44,11 +44,11 @@
 
 - (IBAction)SearchBtn:(id)sender {
 	
-	NSString *post = [NSString stringWithFormat:@"Username=%@&Password=%@",@"admin",@"password"];
+	NSString *post = @"Profile_Name=PPL&Column_Desc=Name|ID%20No&Column_Data=Jacob%20Chin|1";
 	NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
 	NSString *postLength = [NSString stringWithFormat:@"%d",[postData length]];
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-	[request setURL:[NSURL URLWithString:@"http://192.168.2.28/docufloSDK/docuflosdk.asmx/Login"]];
+	[request setURL:[NSURL URLWithString:@"http://192.168.2.28/DocufloSDK/docuflosdk.asmx/ProfileSearchMobile"]];
 	
 	[request setHTTPMethod:@"POST"];
 	[request setValue:postLength forHTTPHeaderField:@"Content-Length"];
@@ -70,6 +70,11 @@
 	NSLog(@"Receive:%d bytes",[urlData length]);
 	NSString *aStr = [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
 	NSLog(@"aStr value==>%@", aStr);
+    
+    //http://192.168.2.28/DocufloSDK/docuflosdk.asmx/ProfileSearchMobile?Profile_Name=PPL&Column_Desc=Name|ID%20No&Column_Data=Jacob%20Chin|1
+    
+    
+    
 }
 
 // This method is used to receive the data which we get using post method.
