@@ -15,6 +15,18 @@
 
 @implementation SearchViewController
 
+NSString *temp;
+int count;
+NSString *strName;
+NSString *strIDno;
+NSString *strLicNO;
+NSString *strDocType;
+NSString *strVerID;
+NSString *strProfileID;
+NSString *strDocID;
+NSString *strImageName;
+
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -27,6 +39,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	count = 0;
+	temp = @"";
+	
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -46,21 +61,201 @@
 {
     //a-sync or xmlparser
     //http://192.168.2.28/DocufloSDK/docuflosdk.asmx/ProfileSearchMobile?Profile_Name=PPL&Column_Desc=Name|ID%20No&Column_Data=Jacob%20Chin|1
-	    
+	
+	
+	[self parseXMLFileAtURL];
+	[self.SearchTableView reloadData];
 }
 
-// This method is used to receive the data which we get using post method.
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData*)data {
+
+#pragma mark - XMLParser
+
+- (void)parseXMLFileAtURL
+{
+	NSString *post = @"Profile_Name=PPL&Column_Desc=Name|ID%20No&Column_Data=Jacob%20Chin|1";
+	NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+	NSString *postLength = [NSString stringWithFormat:@"%d",[postData length]];
+	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+	
+	
+	[request setURL:[NSURL URLWithString:@"http://192.168.2.28/DocufloSDK/docuflosdk.asmx/ProfileSearchMobile"]];
+	
+	[request setHTTPMethod:@"POST"];
+	[request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+	[request setHTTPBody:postData];
+	
+	
+	
+	NSData *xmlFile;
+	xmlFile = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
+	
+	
+	articles = [[NSMutableArray alloc] init];
+	errorParsing=NO;
+	
+	rssParser = [[NSXMLParser alloc] initWithData:xmlFile];
+	[rssParser setDelegate:self];
+	
+	// You may need to turn some of these on depending on the type of XML file you are parsing
+	[rssParser setShouldProcessNamespaces:NO];
+	[rssParser setShouldReportNamespacePrefixes:NO];
+	[rssParser setShouldResolveExternalEntities:NO];
+	
+	[rssParser parse];
+	
 	
 }
 
-// This method receives the error report in case of connection is not made to server.
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+- (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
+	
+	NSString *errorString = [NSString stringWithFormat:@"Error code %i", [parseError code]];
+	NSLog(@"Error parsing XML: %@", errorString);
+	
+	
+	errorParsing=YES;
+}
+
+- (void)parserDidStartDocument:(NSXMLParser *)parser{
+	NSLog(@"File found and parsing started");
 	
 }
 
-// This method is used to process the data after connection has made successfully.
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict{
+	currentElement = [elementName copy];
+	ElementValue = [[NSMutableString alloc] init];
+	if ([elementName isEqualToString:@"DataProfileResult"]) {
+		item = [[NSMutableDictionary alloc] init];
+	}
+}
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string{
+		ElementValue = [[NSMutableString alloc]initWithString:string];
+}
+
+- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
+	
+//		NSLog(@"%d-set into Item: elementName: %@ ElementValue: %@", count, elementName, ElementValue);
+	
+		if ([temp isEqualToString:@"Name"] && (![elementName isEqualToString:@"Col_Desc"]  && ![elementName isEqualToString:@"Col_ID"] && ![elementName isEqualToString:@"Col_Name"]) ) {
+			strName = ElementValue;
+		}
+		else if ([temp isEqualToString:@"IDNo"] && (![elementName isEqualToString:@"Col_Desc"]  && ![elementName isEqualToString:@"Col_ID"] && ![elementName isEqualToString:@"Col_Name"]) ) {
+			strIDno = ElementValue;
+		}
+		else if ([temp isEqualToString:@"LicNo"] && (![elementName isEqualToString:@"Col_Desc"]  && ![elementName isEqualToString:@"Col_ID"] && ![elementName isEqualToString:@"Col_Name"]) ) {
+			strLicNO = ElementValue;
+		}
+		else if ([temp isEqualToString:@"DocType"] && (![elementName isEqualToString:@"Col_Desc"]  && ![elementName isEqualToString:@"Col_ID"] && ![elementName isEqualToString:@"Col_Name"]) ) {
+			strDocType = ElementValue;
+		}
+		else if ([elementName isEqualToString:@"VerID"]) {
+			strVerID = ElementValue;
+		}
+		else if ([elementName isEqualToString:@"ProfileID"]) {
+			strProfileID = ElementValue;
+		}
+		else if ([elementName isEqualToString:@"DocID"]) {
+			strDocID = ElementValue;
+		}
+		else if ([elementName isEqualToString:@"ImageName"]) {
+			strImageName = ElementValue;
+		}
+	
+		if ([elementName isEqualToString:@"DataProfileResult"]) {
+			NSDictionary *tempData = [[NSDictionary alloc] initWithObjectsAndKeys:strName, @"Name", strIDno, @"IDNo", strLicNO, @"LicNo", strDocType, @"DocType", strVerID, @"VerID", strProfileID, @"ProfileID", strDocID, @"DocID", strImageName, @"ImageName",nil];
+			[articles addObject:[tempData copy]];
+		}
+		
+		temp = ElementValue;
+}
+
+- (void)parserDidEndDocument:(NSXMLParser *)parser {
+	
+	if (errorParsing == NO)
+	{
+		NSLog(@"%@", articles);
+		temp = @"";
+		NSLog(@"XML processing done!");
+	} else {
+		NSLog(@"Error occurred during XML processing");
+	}
+}
+
+#pragma mark - `Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+	return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+
+	return [articles count];
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	
+	static NSString *CellIdentifier = @"Cell";
+	
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	if (cell == nil) {
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	}
+	[[cell.contentView viewWithTag:2001] removeFromSuperview ];
+	[[cell.contentView viewWithTag:2002] removeFromSuperview ];
+	[[cell.contentView viewWithTag:2003] removeFromSuperview ];
+	[[cell.contentView viewWithTag:2004] removeFromSuperview ];
+	[[cell.contentView viewWithTag:2005] removeFromSuperview ];
+	
+	if (articles.count != 0) {
+		if(indexPath.row < [articles count]){
+
+			UILabel *label1=[[UILabel alloc]initWithFrame:CGRectMake(0,0, 30, 50)];
+			label1.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"ProfileID"];
+			label1.tag = 2001;
+			[cell.contentView addSubview:label1];
+			
+			UILabel *label2=[[UILabel alloc]initWithFrame:CGRectMake(30,0, 100, 50)];
+			label2.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"Name"];
+			label2.tag = 2002;
+			[cell.contentView addSubview:label2];
+			
+			UILabel *label3=[[UILabel alloc]initWithFrame:CGRectMake(150,0, 150, 50)];
+			label3.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"IDNo"];
+			label3.tag = 2003;
+			[cell.contentView addSubview:label3];
+			
+			UILabel *label4=[[UILabel alloc]initWithFrame:CGRectMake(300,0, 100, 50)];
+			label4.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"LicNo"];
+			label4.tag = 2004;
+			[cell.contentView addSubview:label4];
+			
+			UILabel *label5=[[UILabel alloc]initWithFrame:CGRectMake(450,0, 100, 50)];
+			label5.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"ImageName"];
+			label5.tag = 2005;
+			[cell.contentView addSubview:label5];
+		}
+	}
+	
+	[cell setAccessoryType: UITableViewCellAccessoryDisclosureIndicator];
+	
+	return cell;
+}
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+}
+
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
 	
 }
+
 @end

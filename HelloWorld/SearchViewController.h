@@ -8,23 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SearchViewController : UIViewController {
-
-BOOL errorParsing;
+@interface SearchViewController : UIViewController <UITableViewDelegate,UITableViewDataSource>{
 	
-NSXMLParser *rssParser;
-NSMutableArray *articles;
-NSMutableDictionary *item;
-NSString *currentElement;
-NSMutableString *ElementValue;
+	NSXMLParser *rssParser;
+	NSMutableArray *articles;
+	NSMutableDictionary *item;
+	NSString *currentElement;
+	NSMutableString *ElementValue;
+	BOOL errorParsing;
 
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *ProfileNameTxt;
 @property (weak, nonatomic) IBOutlet UITextField *UserNameTxt;
 @property (weak, nonatomic) IBOutlet UITableView *SearchTableView;
-
-
 
 
 - (IBAction)BackBtn:(id)sender;
