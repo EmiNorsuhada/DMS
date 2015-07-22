@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *ProfileNameTxt;
 @property (weak, nonatomic) IBOutlet UITextField *UserNameTxt;
 @property (weak, nonatomic) IBOutlet UITableView *SearchTableView;
+@property (strong, nonatomic) IBOutlet UILabel *Type;
 
 
 - (IBAction)BackBtn:(id)sender;

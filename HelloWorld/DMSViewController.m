@@ -79,6 +79,7 @@
     NSRange rangeValue = [aStr rangeOfString:@">3<" options:NSCaseInsensitiveSearch];
     NSRange rangeValue1 = [aStr rangeOfString:@"Incorrect User Name or Password" options:NSCaseInsensitiveSearch];
     NSRange rangeValue2 = [aStr rangeOfString:@"Invalid Parameter" options:NSCaseInsensitiveSearch];
+    NSRange rangeValue3 = [aStr rangeOfString:@"suspended" options:NSCaseInsensitiveSearch];
     
     if (rangeValue.length > 0)
     {
@@ -95,6 +96,14 @@
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"DMS" message:@"Invalid Parameter" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alertView show];
     }
+    else if (rangeValue3.length > 0)
+    {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"DMS" message:@"Your account has been suspended" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alertView show];
+    }
 
-   }
+//    SearchViewController *controller = [[SearchViewController alloc]init];
+//    [self presentViewController:controller animated:YES completion:Nil];
+
+}
 @end

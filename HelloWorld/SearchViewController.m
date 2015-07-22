@@ -8,12 +8,15 @@
 
 #import "SearchViewController.h"
 #import "ModuleViewController.h"
+#import "DMSViewController.h"
+#import "pdfView.h"
 
 @interface SearchViewController ()
 
 @end
 
 @implementation SearchViewController
+@synthesize UserNameTxt,ProfileNameTxt;
 
 NSString *temp;
 int count;
@@ -53,7 +56,7 @@ NSString *strImageName;
 
 - (IBAction)BackBtn:(id)sender {
 	
-	ModuleViewController *controller = [[ModuleViewController alloc]init];
+	DMSViewController *controller = [[DMSViewController alloc]init];
 	[self presentViewController:controller animated:YES completion:Nil];
 }
 
@@ -72,7 +75,8 @@ NSString *strImageName;
 
 - (void)parseXMLFileAtURL
 {
-	NSString *post = @"Profile_Name=PPL&Column_Desc=Name|ID%20No&Column_Data=Jacob%20Chin|1";
+	//NSString *post = @"Profile_Name=PPL&Column_Desc=Name|ID%20No&Column_Data=Jacob%20Chin|1";
+     NSString *post = [NSString stringWithFormat:@"Profile_Name=%@&Column_Desc=Name|ID20No&Column_Data=%@|1",@"PPL",UserNameTxt.text];
 	NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
 	NSString *postLength = [NSString stringWithFormat:@"%d",[postData length]];
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -85,8 +89,6 @@ NSString *strImageName;
 	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
 	[request setHTTPBody:postData];
 	
-	
-	
 	NSData *xmlFile;
 	xmlFile = [ NSURLConnection sendSynchronousRequest:request returningResponse: nil error: nil ];
 	
@@ -96,7 +98,6 @@ NSString *strImageName;
 	
 	rssParser = [[NSXMLParser alloc] initWithData:xmlFile];
 	[rssParser setDelegate:self];
-	
 	// You may need to turn some of these on depending on the type of XML file you are parsing
 	[rssParser setShouldProcessNamespaces:NO];
 	[rssParser setShouldReportNamespacePrefixes:NO];
@@ -197,7 +198,6 @@ NSString *strImageName;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	
 	static NSString *CellIdentifier = @"Cell";
 	
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -250,12 +250,42 @@ NSString *strImageName;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
-}
-
--(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	
+     NSLog(@"celltext %@", [[articles objectAtIndex:indexPath.row ]objectForKey:@"DocID"]);
+    
+    NSString *ProfileID = [[articles objectAtIndex:indexPath.row ]objectForKey:@"ProfileID"];
+    NSString *VerID = [[articles objectAtIndex:indexPath.row ]objectForKey:@"VerID"];
+    NSString *post = [NSString stringWithFormat:@"VerID=%@&DocProfileID=%@&FileType=1",VerID,ProfileID];
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%d",[postData length]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:@"http://192.168.2.28/DocufloSDK/docuflosdk.asmx/ViewFileMobile"]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    NSData *urlData;
+    NSURLResponse *response;
+    NSError *error;
+    urlData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    if(conn) {
+        NSLog(@"Connection Successful");
+    } else {
+        NSLog(@"Connection could not be made");
+    }
+    NSString *aStr = [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
+    NSLog(@"astr %@",aStr);
+    NSArray *Separate = [aStr componentsSeparatedByString:@">"];
+    NSString *DEleteAfter = [Separate objectAtIndex:2];
+    NSArray  *LastTrim = [DEleteAfter componentsSeparatedByString:@"</string"];
+    NSString *LAstURL = [LastTrim objectAtIndex:0];
+    NSUserDefaults *pdfURL = [NSUserDefaults standardUserDefaults];
+    NSString *Url =LAstURL;
+    
+    [pdfURL setObject:Url forKey:@"URL"];
+    pdfView *viewController = [[pdfView alloc] init];
+    [self presentViewController:viewController animated:YES completion:nil];
+    
 }
 
 @end

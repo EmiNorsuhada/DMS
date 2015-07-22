@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6ABAFD5F1B54C070000EB3AF /* abstract_business_background_311474.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6ABAFD5E1B54C070000EB3AF /* abstract_business_background_311474.jpg */; };
+		6ABAFD611B54D981000EB3AF /* orange-ribbon-abstract-hd1080p.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6ABAFD601B54D981000EB3AF /* orange-ribbon-abstract-hd1080p.jpg */; };
+		6ABAFD631B54D9EC000EB3AF /* BAckground.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ABAFD621B54D9EC000EB3AF /* BAckground.png */; };
+		6ABAFD651B54DB2C000EB3AF /* konzept_wallpaper_white1.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ABAFD641B54DB2C000EB3AF /* konzept_wallpaper_white1.png */; };
+		6ABAFD681B55FC43000EB3AF /* pdfView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ABAFD671B55FC43000EB3AF /* pdfView.m */; };
 		C38476E71B4245D700063D90 /* DMSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C38476E51B4245D700063D90 /* DMSViewController.m */; };
 		C38476E81B4245D700063D90 /* DMSViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C38476E61B4245D700063D90 /* DMSViewController.xib */; };
 		C38476EC1B424CF000063D90 /* ModuleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C38476EA1B424CF000063D90 /* ModuleViewController.m */; };
@@ -44,6 +49,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6ABAFD5E1B54C070000EB3AF /* abstract_business_background_311474.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = abstract_business_background_311474.jpg; sourceTree = "<group>"; };
+		6ABAFD601B54D981000EB3AF /* orange-ribbon-abstract-hd1080p.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "orange-ribbon-abstract-hd1080p.jpg"; sourceTree = "<group>"; };
+		6ABAFD621B54D9EC000EB3AF /* BAckground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BAckground.png; sourceTree = "<group>"; };
+		6ABAFD641B54DB2C000EB3AF /* konzept_wallpaper_white1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = konzept_wallpaper_white1.png; sourceTree = "<group>"; };
+		6ABAFD661B55FC43000EB3AF /* pdfView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pdfView.h; sourceTree = "<group>"; };
+		6ABAFD671B55FC43000EB3AF /* pdfView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pdfView.m; sourceTree = "<group>"; };
 		C38476E41B4245D700063D90 /* DMSViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DMSViewController.h; sourceTree = "<group>"; };
 		C38476E51B4245D700063D90 /* DMSViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DMSViewController.m; sourceTree = "<group>"; };
 		C38476E61B4245D700063D90 /* DMSViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DMSViewController.xib; sourceTree = "<group>"; };
@@ -159,6 +170,12 @@
 				C38476EB1B424CF000063D90 /* ModuleViewController.xib */,
 				C38476EE1B424EC200063D90 /* SearchViewController.h */,
 				C38476EF1B424EC200063D90 /* SearchViewController.m */,
+				6ABAFD661B55FC43000EB3AF /* pdfView.h */,
+				6ABAFD671B55FC43000EB3AF /* pdfView.m */,
+				6ABAFD5E1B54C070000EB3AF /* abstract_business_background_311474.jpg */,
+				6ABAFD601B54D981000EB3AF /* orange-ribbon-abstract-hd1080p.jpg */,
+				6ABAFD641B54DB2C000EB3AF /* konzept_wallpaper_white1.png */,
+				6ABAFD621B54D9EC000EB3AF /* BAckground.png */,
 				C38476F01B424EC200063D90 /* SearchViewController.xib */,
 			);
 			path = HelloWorld;
@@ -269,13 +286,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6ABAFD611B54D981000EB3AF /* orange-ribbon-abstract-hd1080p.jpg in Resources */,
 				C38476FF1B42572600063D90 /* small-button-th.png in Resources */,
+				6ABAFD651B54DB2C000EB3AF /* konzept_wallpaper_white1.png in Resources */,
 				C38476F91B4252CA00063D90 /* 32px-Download_Files_4_You_Logo.png in Resources */,
 				F445F9BD1805BAD9003CF95E /* InfoPlist.strings in Resources */,
 				C38476F51B42506600063D90 /* line.png in Resources */,
 				C38476E81B4245D700063D90 /* DMSViewController.xib in Resources */,
 				C38476F21B424EC200063D90 /* SearchViewController.xib in Resources */,
+				6ABAFD631B54D9EC000EB3AF /* BAckground.png in Resources */,
 				C38476ED1B424CF000063D90 /* ModuleViewController.xib in Resources */,
+				6ABAFD5F1B54C070000EB3AF /* abstract_business_background_311474.jpg in Resources */,
 				F445F9C51805BAD9003CF95E /* Images.xcassets in Resources */,
 				C38476FD1B42532400063D90 /* Download_Files_4_You_Logo.png in Resources */,
 				C38476FB1B42530600063D90 /* 64px-Download_Files_4_You_Logo.png in Resources */,
@@ -303,6 +324,7 @@
 				C38476E71B4245D700063D90 /* DMSViewController.m in Sources */,
 				C38476F11B424EC200063D90 /* SearchViewController.m in Sources */,
 				F445F9BF1805BAD9003CF95E /* main.m in Sources */,
+				6ABAFD681B55FC43000EB3AF /* pdfView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,7 +448,7 @@
 				INFOPLIST_FILE = "HelloWorld/HelloWorld-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -441,7 +463,7 @@
 				INFOPLIST_FILE = "HelloWorld/HelloWorld-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
