@@ -19,7 +19,11 @@
 	
 	CGRect rect = [[UIScreen mainScreen] bounds];
 	CGSize screenSize = rect.size;
-	UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0,0,screenSize.width,screenSize.height)];
+	UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(60,80,screenSize.width,screenSize.height)];
+    
+    UINavigationBar *myBar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 780, 50)];
+    self.navigationItem.title =@"View";
+    [self.view addSubview:myBar];
 	
 	NSUserDefaults *pdfURL = [NSUserDefaults standardUserDefaults];
 	NSString *strURL = [pdfURL stringForKey:@"URL"];
@@ -31,9 +35,9 @@
 	[self.view addSubview:webView];
 	
 	BtnClose = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	BtnClose = [[UIButton alloc] initWithFrame:CGRectMake(120, 20, 60, 40)];
-	BtnClose.backgroundColor = [UIColor blueColor];
-	BtnClose.layer.borderColor = [UIColor blueColor].CGColor;
+	BtnClose = [[UIButton alloc] initWithFrame:CGRectMake(20, 60, 60, 40)];
+	BtnClose.backgroundColor = [UIColor grayColor];
+	BtnClose.layer.borderColor = [UIColor blackColor].CGColor;
 	BtnClose.layer.borderWidth = 0.5f;
 	BtnClose.layer.cornerRadius = 10.0f;
 	[BtnClose addTarget:self action:@selector(CloseX) forControlEvents:UIControlEventTouchUpInside];
