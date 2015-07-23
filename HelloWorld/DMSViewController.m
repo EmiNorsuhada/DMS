@@ -15,7 +15,7 @@
 @end
 
 @implementation DMSViewController
-@synthesize PassWord,UserName;
+@synthesize PassWord,UserName, txtURL;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,6 +47,20 @@
     PassWord.returnKeyType = UIReturnKeyDone;
     [self.view addSubview:PassWord];
     PassWord.clearButtonMode = UITextFieldViewModeWhileEditing;
+	
+	txtURL.textColor =[UIColor blackColor];
+	txtURL.placeholder =@"URL";
+	txtURL.font =[UIFont systemFontOfSize:17.0];
+	txtURL.backgroundColor =[UIColor whiteColor];
+	txtURL.keyboardType = UIKeyboardAppearanceDefault;
+	txtURL.returnKeyType = UIReturnKeyDone;
+	[self.view addSubview:txtURL];
+	txtURL.clearButtonMode = UITextFieldViewModeWhileEditing;
+	
+	
+//	UserName.text = @"admin";
+//	PassWord.text = @"password";
+	txtURL.text = @"http://192.168.2.28/docufloSDK/docuflosdk.asmx/Login";
 }
 
 - (void)didReceiveMemoryWarning
@@ -60,7 +74,9 @@
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
     NSString *postLength = [NSString stringWithFormat:@"%d",[postData length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString:@"http://192.168.2.28/docufloSDK/docuflosdk.asmx/Login"]];
+	
+	NSString *url = [NSString stringWithFormat:@"%@",txtURL.text];
+    [request setURL:[NSURL URLWithString:url]];
     [request setHTTPMethod:@"POST"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
@@ -76,6 +92,9 @@
         NSLog(@"Connection could not be made");
     }
     NSString *aStr = [[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding];
+	
+	
+	
     NSRange rangeValue = [aStr rangeOfString:@">3<" options:NSCaseInsensitiveSearch];
     NSRange rangeValue1 = [aStr rangeOfString:@"Incorrect User Name or Password" options:NSCaseInsensitiveSearch];
     NSRange rangeValue2 = [aStr rangeOfString:@"Invalid Parameter" options:NSCaseInsensitiveSearch];
