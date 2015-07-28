@@ -45,6 +45,8 @@ NSString *strImageName;
 	count = 0;
 	temp = @"";
 	
+	UserNameTxt.text = @"jacob*";
+	
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -206,64 +208,75 @@ NSString *strImageName;
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 	[[cell.contentView viewWithTag:2001] removeFromSuperview ];
-	[[cell.contentView viewWithTag:2002] removeFromSuperview ];
-	[[cell.contentView viewWithTag:2003] removeFromSuperview ];
-	[[cell.contentView viewWithTag:2004] removeFromSuperview ];
-	[[cell.contentView viewWithTag:2005] removeFromSuperview ];
+//	[[cell.contentView viewWithTag:2002] removeFromSuperview ];
+//	[[cell.contentView viewWithTag:2003] removeFromSuperview ];
+//	[[cell.contentView viewWithTag:2004] removeFromSuperview ];
+//	[[cell.contentView viewWithTag:2005] removeFromSuperview ];
 	
 	if (articles.count != 0) {
 		if(indexPath.row < [articles count]){
-
-//			UILabel *label1=[[UILabel alloc]initWithFrame:CGRectMake(0,0, 30, 50)];
-//			label1.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"ProfileID"];
-//			label1.tag = 2001;
-//			[cell.contentView addSubview:label1];
-//			
-//			UILabel *label2=[[UILabel alloc]initWithFrame:CGRectMake(30,0, 100, 50)];
-//			label2.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"Name"];
-//			label2.tag = 2002;
-//			[cell.contentView addSubview:label2];
-//			
-//			UILabel *label3=[[UILabel alloc]initWithFrame:CGRectMake(150,0, 150, 50)];
-//			label3.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"IDNo"];
-//			label3.tag = 2003;
-//			[cell.contentView addSubview:label3];
-//			
-//			UILabel *label4=[[UILabel alloc]initWithFrame:CGRectMake(300,0, 100, 50)];
-//			label4.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"LicNo"];
-//			label4.tag = 2004;
-//			[cell.contentView addSubview:label4];
-//			
-//			UILabel *label5=[[UILabel alloc]initWithFrame:CGRectMake(450,0, 100, 50)];
-//			label5.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"ImageName"];
-//			label5.tag = 2005;
-//			[cell.contentView addSubview:label5];
-            
-            UILabel *label1=[[UILabel alloc]initWithFrame:CGRectMake(2,0, 130, 50)];
-            label1.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"Name"];
+			
+			NSString *imgName = [[articles objectAtIndex:indexPath.row ]objectForKey:@"ImageName"];
+			NSArray *split = [imgName componentsSeparatedByString:@"."];
+			NSString *imgType = [split objectAtIndex:[split count] - 1];
+			
+//			NSLog(@"tt: %@", imgType);
+			
+			UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(2, 0, 45, 45)];
+			
+			if ([imgType isEqualToString:@"jpg"]) {
+				imgView.image = [UIImage imageNamed:@"JPEG.png"];
+			}
+			else if ([imgType isEqualToString:@"tif"]) {
+				imgView.image = [UIImage imageNamed:@"tiff-128.png"];
+			}
+			else if ([imgType isEqualToString:@"pdf"]) {
+				imgView.image = [UIImage imageNamed:@"PDF.png"];
+			}
+			else if ([imgType isEqualToString:@"gif"]) {
+				imgView.image = [UIImage imageNamed:@"gif.png"];
+			}
+			else if ([imgType isEqualToString:@"IMG"]) {
+				imgView.image = [UIImage imageNamed:@"IMG.png"];
+			}
+			else {
+				imgView.image = [UIImage imageNamed:@"doc.png"];
+			}
+			[cell.contentView addSubview:imgView];
+			
+			NSString *Name = [[articles objectAtIndex:indexPath.row ]objectForKey:@"Name"];
+			NSString *AppNo = [[articles objectAtIndex:indexPath.row ]objectForKey:@"LicNo"];
+			NSString *ID = [[articles objectAtIndex:indexPath.row ]objectForKey:@"IDNo"];
+			NSString *strPrint = [NSString stringWithFormat:@"%@\n%@, %@",Name, AppNo, ID];
+	
+            UILabel *label1=[[UILabel alloc]initWithFrame:CGRectMake(60,0, 1000, 50)];
+			label1.text = strPrint;
             label1.tag = 2001;
             label1.backgroundColor =[UIColor clearColor];
+			label1.numberOfLines = 2;
             [cell.contentView addSubview:label1];
             
-            UILabel *label2=[[UILabel alloc]initWithFrame:CGRectMake(180,0, 140, 50)];
-            label2.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"IDNo"];
-            label2.tag = 2002;
-            [cell.contentView addSubview:label2];
-            
-            UILabel *label3=[[UILabel alloc]initWithFrame:CGRectMake(350,0, 150, 50)];
-            label3.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"ImageName"];
-            label3.tag = 2003;
-            [cell.contentView addSubview:label3];
-            
-            UILabel *label4=[[UILabel alloc]initWithFrame:CGRectMake(500,0, 100, 50)];
-            label4.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"LicNo"];
-            label4.tag = 2004;
-            [cell.contentView addSubview:label4];
-            
-            UILabel *label5=[[UILabel alloc]initWithFrame:CGRectMake(660,0, 100, 50)];
-            label5.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"VerID"];
-            label5.tag = 2005;
-            [cell.contentView addSubview:label5];
+//            UILabel *label2=[[UILabel alloc]initWithFrame:CGRectMake(180,0, 140, 50)];
+//            label2.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"IDNo"];
+//            label2.tag = 2002;
+//            [cell.contentView addSubview:label2];
+//            
+//            UILabel *label3=[[UILabel alloc]initWithFrame:CGRectMake(350,0, 150, 50)];
+//            label3.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"ImageName"];
+//            label3.tag = 2003;
+//            [cell.contentView addSubview:label3];
+//            
+//            UILabel *label4=[[UILabel alloc]initWithFrame:CGRectMake(500,0, 100, 50)];
+//            label4.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"LicNo"];
+//            label4.tag = 2004;
+//            [cell.contentView addSubview:label4];
+//            
+//            UILabel *label5=[[UILabel alloc]initWithFrame:CGRectMake(660,0, 100, 50)];
+//            label5.text= [[articles objectAtIndex:indexPath.row ]objectForKey:@"VerID"];
+//            label5.tag = 2005;
+//            [cell.contentView addSubview:label5];
+			
+			
 
             
 		}

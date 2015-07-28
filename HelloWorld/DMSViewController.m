@@ -58,8 +58,8 @@
 	txtURL.clearButtonMode = UITextFieldViewModeWhileEditing;
 	
 	
-//	UserName.text = @"admin";
-//	PassWord.text = @"password";
+	UserName.text = @"admin";
+	PassWord.text = @"password";
 	txtURL.text = @"http://192.168.2.28/docufloSDK/docuflosdk.asmx/Login";
 }
 
